@@ -14,7 +14,7 @@
   const exportCurrentAsPlaylist = (playlist: Playlist): void => {
   }
 
-  $: items = $playlists.map((playlist) => ({ id: `playlist-${playlist.title}`, playlist }))
+  $: items = $playlists.map((playlist) => ({ id: playlist.uuid, playlist }))
 
   let container: HTMLElement
 

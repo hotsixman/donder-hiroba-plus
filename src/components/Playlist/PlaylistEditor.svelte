@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
-  import { type PlaylistsStore, updateFavoriteSongList } from '../../lib/playlist'
+  import { type PlaylistsStore, updateFavoriteSongList, decodeBase64 } from '../../lib/playlist'
   import Button from '../Common/Button.svelte'
   import { SongDB } from '../../lib/songDB'
 
@@ -48,6 +48,23 @@
     sessionStorage.setItem('favoriteSongList', JSON.stringify(favoriteSongs))
   }
 
+  const decodePlaylist = async (): Promise<void> => {
+    const t = prompt('Enter the playlist string')
+    if (t === null) {
+      return
+    }
+
+    let [title, base64] = t.split('|')
+    title = title.replaceAll('_', ' ')
+    console.log(title, base64)
+    const songNoList = decodeBase64(base64)
+    await playlists.add({
+      uuid: genUUID(),
+      title,
+      songNoList
+    })
+  }
+
   let songDB: SongDB
   let storage: ExtensionStorage
 
@@ -69,6 +86,9 @@
 <div class="wrapper">
   <PlaylistContainer {storage} {playlists} {songDB} />
   <div class="button-container">
+    <Button on:click={decodePlaylist}>
+      Decode Base64
+    </Button>
     <Button on:click={importCurrentAsPlaylist}>
       ↑ Import ↑
     </Button>

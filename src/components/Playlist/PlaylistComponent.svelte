@@ -7,6 +7,7 @@
   import Button from '../Common/Button.svelte'
   import { icons } from '../../assets'
   import type { ExtensionStorage } from '../../lib/storage'
+  import { encodeBase64 } from '../../lib/playlist'
 
   export let playlist: Playlist
   export let songDB: SongDB
@@ -49,6 +50,13 @@
     }
 
     onRemove(playlist)
+  }
+
+  const copyBase64 = async (): Promise<void> => {
+    const title = playlist.title.replaceAll(' ', '_')
+    const base64 = encodeBase64(playlist.songNoList)
+    const str = `${title}|${base64}`
+    await navigator.clipboard.writeText(str)
   }
 
   // let items = [ { id: 1, name: 'item1' }, { id: 2, name: 'item2' }, { id: 3, name: 'item3' }, { id: 4, name: 'item4' } ]
@@ -100,6 +108,9 @@
         </Button>
         <Button on:click={remove}>
           Delete
+        </Button>
+        <Button on:click={copyBase64}>
+          Copy Base64
         </Button>
       </div>
       <section class="song-container" use:dndzone={{ type: 'song', items, flipDurationMs }} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
@@ -173,6 +184,7 @@
     display: flex;
     padding: 4px;
     justify-content: space-around;
+    flex-wrap: wrap;
   }
 
   section {
