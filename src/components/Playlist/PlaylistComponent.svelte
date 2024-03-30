@@ -1,14 +1,16 @@
 <script lang="ts">
   import type { SongDB } from '../../lib/songDB'
-  import type { Playlist, SongData } from '../../types'
+  import type { Playlist, SongData, SongScore } from '../../types'
   import Song from '../Song/Song.svelte'
   import { flip } from 'svelte/animate'
   import { dndzone, type DndEvent } from 'svelte-dnd-action'
   import Button from '../Common/Button.svelte'
   import { icons } from '../../assets'
+  import type { ExtensionStorage } from '../../lib/storage'
 
   export let playlist: Playlist
   export let songDB: SongDB
+  export let storage: ExtensionStorage
   export let onChange: (playlist: Playlist) => void
   export let onExport: (playlist: Playlist) => void
   export let onRemove: (playlist: Playlist) => void
@@ -18,17 +20,18 @@
   let wrapper: HTMLDivElement
   let title: HTMLDivElement
 
-  const getTitle = (songData?: SongData): string => {
-    if (songData === undefined) {
-      return 'unknown'
+  const getTranslatedTitle = (songData?: SongData, songScore?: SongScore): string => {
+    if (songData !== undefined) {
+      const language = storage.settings.language
+      if (language === 'ko') {
+        return songData?.title_kr_user ?? songData?.title ?? 'unknown'
+      }
+      return songData?.title ?? 'unknown'
+    } else if (songScore?.title !== undefined) {
+      return songScore.title
     }
 
-    const language = 'ko'
-    if (language === 'ko') {
-      return songData?.title_kr_user ?? songData?.title ?? 'unknown'
-    }
-
-    return songData?.title ?? 'unknown'
+    return 'unknown'
   }
 
   const rename = (): void => {
@@ -103,13 +106,14 @@
         {#each items as item(item.id)}
           {@const songNo = item.songNo}
           {@const songData = songDB.getSongData(songNo)}
+          {@const songScore = storage.getScoreByNo(songNo)}
           <div animate:flip={{ duration: flipDurationMs }}>
             <Song
               songNo={songNo}
               title={songData?.title ?? `unknown songNo${songNo}`}
               genre={songData?.genres.at(0) ?? 'unknown'}
-              details={{}}
-              translatedTitle={getTitle(songData)}
+              details={songScore?.details ?? {}}
+              translatedTitle={getTranslatedTitle(songData, songScore)}
               songData={songData}
               taikoNo={''}
               playlists={undefined}

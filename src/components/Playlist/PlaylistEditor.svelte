@@ -67,7 +67,7 @@
 </script>
 
 <div class="wrapper">
-  <PlaylistContainer {playlists} {songDB} />
+  <PlaylistContainer {storage} {playlists} {songDB} />
   <div class="button-container">
     <Button on:click={importCurrentAsPlaylist}>
       ↑ Import ↑

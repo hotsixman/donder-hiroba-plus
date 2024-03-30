@@ -5,9 +5,11 @@
   import type { Playlist } from '../../types'
   import type { PlaylistsStore } from '../../lib/playlist'
   import type { SongDB } from '../../lib/songDB'
+  import type { ExtensionStorage } from '../../lib/storage'
 
   export let playlists: PlaylistsStore
   export let songDB: SongDB
+  export let storage: ExtensionStorage
 
   const exportCurrentAsPlaylist = (playlist: Playlist): void => {
   }
@@ -44,6 +46,7 @@
       <PlaylistComponent
         playlist={item.playlist}
         {songDB}
+        {storage}
         onExport={() => { exportCurrentAsPlaylist(item.playlist) }}
         onRemove={async () => { await playlists.remove(item.playlist) }}
         onChange={onChange}
