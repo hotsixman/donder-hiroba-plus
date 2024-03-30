@@ -7,13 +7,13 @@
   import Button from '../Common/Button.svelte'
   import { icons } from '../../assets'
   import type { ExtensionStorage } from '../../lib/storage'
-  import { encodeBase64 } from '../../lib/playlist'
+  import { encodeBase64, updateFavoriteSongList } from '../../lib/playlist'
+  import { getContext } from 'svelte'
 
   export let playlist: Playlist
   export let songDB: SongDB
   export let storage: ExtensionStorage
   export let onChange: (playlist: Playlist) => void
-  export let onExport: (playlist: Playlist) => void
   export let onRemove: (playlist: Playlist) => void
 
   let open = false
@@ -57,6 +57,22 @@
     const base64 = encodeBase64(playlist.songNoList)
     const str = `${title}|${base64}`
     await navigator.clipboard.writeText(str)
+  }
+
+  const tckt: string = getContext('tckt')
+  const onExport = async (): Promise<void> => {
+    const songNoList = playlist.songNoList
+
+    try {
+      await updateFavoriteSongList(songNoList, tckt)
+    } catch (e) {
+      console.error(e)
+      alert('Failed to save favorite songs')
+      return
+    }
+
+    sessionStorage.removeItem('favoriteSongList')
+    window.location.href = 'https://donderhiroba.jp/mypage_top.php'
   }
 
   // let items = [ { id: 1, name: 'item1' }, { id: 2, name: 'item2' }, { id: 3, name: 'item3' }, { id: 4, name: 'item4' } ]
@@ -103,7 +119,7 @@
         <Button on:click={rename}>
           Rename
         </Button>
-        <Button on:click={() => { onExport(playlist) }}>
+        <Button on:click={onExport}>
           ↓ Export ↓
         </Button>
         <Button on:click={remove}>

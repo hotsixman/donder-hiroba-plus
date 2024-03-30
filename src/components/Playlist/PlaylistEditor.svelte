@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, setContext } from 'svelte'
   import { type PlaylistsStore, updateFavoriteSongList, decodeBase64 } from '../../lib/playlist'
   import Button from '../Common/Button.svelte'
   import { SongDB } from '../../lib/songDB'
@@ -17,7 +17,6 @@
   const save = async (): Promise<void> => {
     const songNoList = favoriteSongList.map((item) => item.songNo)
     console.log(songNoList)
-    if (songNoList[0] !== '1') return
 
     try {
       await updateFavoriteSongList(songNoList, tckt)
@@ -68,6 +67,7 @@
   let songDB: SongDB
   let storage: ExtensionStorage
 
+  setContext('tckt', tckt)
   onMount(async () => {
     console.log('tckt', tckt)
     console.log('playlists', playlists)
@@ -84,7 +84,11 @@
 </script>
 
 <div class="wrapper">
-  <PlaylistContainer {storage} {playlists} {songDB} />
+  <PlaylistContainer
+    {storage}
+    {playlists}
+    {songDB}
+  />
   <div class="button-container">
     <Button on:click={decodePlaylist}>
       Decode Base64

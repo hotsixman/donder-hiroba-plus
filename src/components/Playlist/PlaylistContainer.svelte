@@ -11,9 +11,6 @@
   export let songDB: SongDB
   export let storage: ExtensionStorage
 
-  const exportCurrentAsPlaylist = (playlist: Playlist): void => {
-  }
-
   $: items = $playlists.map((playlist) => ({ id: playlist.uuid, playlist }))
 
   let container: HTMLElement
@@ -47,7 +44,6 @@
         playlist={item.playlist}
         {songDB}
         {storage}
-        onExport={() => { exportCurrentAsPlaylist(item.playlist) }}
         onRemove={async () => { await playlists.remove(item.playlist) }}
         onChange={onChange}
       />
