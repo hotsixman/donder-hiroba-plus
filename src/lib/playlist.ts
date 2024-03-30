@@ -45,7 +45,7 @@ export const decodeBase64 = (base64: string): string[] => {
 export const updateFavoriteSongList = async (songNoList: string[], tckt: string): Promise<void> => {
   validateSongNoList(songNoList)
 
-  const body = songNoList.map((no, i) => `song_no_${i}=${no}`).join('&') + `&_tckt=${tckt}`
+  const body = songNoList.map((no, i) => `song_no_${i + 1}=${no}`).join('&') + `&_tckt=${tckt}`
   const res = await fetch('https://donderhiroba.jp/ajax/myfavorite_song.php', {
     headers: {
       accept: 'application/json, text/javascript, */*; q=0.01',
