@@ -1,9 +1,10 @@
 import { get, writable, type Writable } from 'svelte/store'
 import type { FavoriteSong, GenreType, Playlist } from '../types'
+import { MAX_PLAYLIST_SONGS } from '../constants'
 
 const validateSongNoList = (songNoList: string[]): void => {
-  if (!(1 <= songNoList.length && songNoList.length <= 30)) {
-    throw new Error('songNoList length must be between 1 and 30')
+  if (!(1 <= songNoList.length && songNoList.length <= MAX_PLAYLIST_SONGS)) {
+    throw new Error(`songNoList length must be between 1 and ${MAX_PLAYLIST_SONGS}`)
   }
 
   const songNoListNum = songNoList.map(x => Number(x))
@@ -117,6 +118,26 @@ export class PlaylistsStore {
 
   public async remove (playlist: Playlist): Promise<void> {
     const newPlaylists = get(this.store).filter(x => x.uuid !== playlist.uuid)
+    await this.set(newPlaylists)
+  }
+
+  public async addOrRemoveSong (playlist: Playlist, songNo: string): Promise<void> {
+    const newPlaylists = get(this.store).map(x => {
+      if (x.uuid === playlist.uuid) {
+        const newSongNoList = x.songNoList.includes(songNo)
+          ? x.songNoList.filter(no => no !== songNo)
+          : [...x.songNoList, songNo]
+
+        if (newSongNoList.length > MAX_PLAYLIST_SONGS) {
+          alert(`Song list must be less than ${MAX_PLAYLIST_SONGS}`)
+          return x
+        }
+
+        return { ...x, songNoList: newSongNoList }
+      }
+      return x
+    })
+
     await this.set(newPlaylists)
   }
 

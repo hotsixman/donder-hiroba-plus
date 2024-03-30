@@ -5,28 +5,42 @@
   export let playlists: PlaylistsStore
   export let onClickOutside: () => void
 
-  const onClickItem = (idx: number): void => {
-    console.log($playlists[idx])
+  const onClickItem = async (idx: number): Promise<void> => {
+    const playlist = $playlists[idx]
+    await playlists.addOrRemoveSong(playlist, songNo)
   }
 
+  const createNewPlaylist = async (): Promise<void> => {
+    const title = prompt('Enter the title of the playlist')
+    if (title === null) return
+
+    await playlists.add({
+      uuid: Math.random().toString(36).slice(-8),
+      title,
+      songNoList: [songNo]
+    })
+  }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div class="overlay" on:click={onClickOutside}></div>
 <div class="playlist-action">
-
   {#if $playlists.length === 0}
     <div>There's no playlist</div>
   {:else}
     <div class="item-container">
       {#each $playlists as item, i}
-        <button class="item" on:click={() => { onClickItem(i) }}>
+        <button class="item" on:click={async () => { await onClickItem(i) }}>
           <span class:invisible={!item.songNoList.includes(songNo)}>✔️</span>
           <span>{item.title}</span>
-          <span class="song-count">{item.songNoList.length}/30</span>
+          <span class="song-count" style="margin-left: 8px">({item.songNoList.length}/30)</span>
         </button>
       {/each}
+      <button class="item" on:click={createNewPlaylist}>
+        <span>➕</span>
+        <span>Create New Playlist</span>
+      </button>
     </div>
   {/if}
 </div>

@@ -18,3 +18,4 @@ export const BADGES = [0, 1, 2, 3, 4, 5, 6, 7, 8] as const
 export const GENRES = ['unknown', 'jpop', 'anime', 'kids', 'vocaloid', 'game', 'namco', 'variety', 'classic'] as const
 
 export const DONFORCE_NUMBER_OF_RECORDS = 50
+export const MAX_PLAYLIST_SONGS = 30
