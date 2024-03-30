@@ -54,3 +54,11 @@
     </div>
   {/each}
 </section>
+
+<style>
+  .playlist-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+</style>

@@ -111,6 +111,7 @@
   .wrapper {
     width: 290px;
     background: #FFCC00;
+    border-radius: 8px;
   }
 
   .button-container {

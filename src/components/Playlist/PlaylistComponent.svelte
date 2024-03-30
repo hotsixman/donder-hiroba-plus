@@ -88,7 +88,7 @@
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <div class="wrapper" bind:this={wrapper}>
-  <div class="title" bind:this={title} on:click={() => { open = !open }} on:pointerdown={onPointerDown}>
+  <div class="title" class:close={!open} bind:this={title} on:click={() => { open = !open }} on:pointerdown={onPointerDown}>
     <img class="icon" class:open={open} src={icons.chevronArrowDown} alt="arrow"/>
     <span>
       {playlist.title}
@@ -138,7 +138,7 @@
 
 <style>
   .wrapper {
-    width: 100%;
+    width: 280px;
     display: flex;
     flex-direction: column;
     user-select: none;
@@ -156,6 +156,13 @@
     gap: 4px;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .title.close {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
   }
 
   .title:hover {
