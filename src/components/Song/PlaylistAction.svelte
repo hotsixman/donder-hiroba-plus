@@ -56,7 +56,7 @@
   }
 
   .playlist-action {
-    position: absolute;
+    position: static;
     min-width: 200px;
     top: 26px;
     left: 0;

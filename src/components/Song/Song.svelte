@@ -48,16 +48,16 @@
 
   <span class="title">{translatedTitle ?? title}</span>
 
-  {#if showInfo}
-    <SongInfo {title} {songNo} {songData} />
-  {/if}
-
   {#if showPlaylistAction && playlists}
     <PlaylistAction
       {songNo}
       {playlists}
       onClickOutside={() => { showPlaylistAction = false }}
     />
+  {/if}
+
+  {#if showInfo}
+    <SongInfo {title} {songNo} {songData} />
   {/if}
 
   <div class="difficulties">
