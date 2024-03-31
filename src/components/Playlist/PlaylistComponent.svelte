@@ -7,9 +7,10 @@
   import Button from '../Common/Button.svelte'
   import { icons } from '../../assets'
   import type { ExtensionStorage } from '../../lib/storage'
-  import { encodeBase64, updateFavoriteSongList } from '../../lib/playlist'
+  import { type PlaylistsStore, encodeBase64, updateFavoriteSongList } from '../../lib/playlist'
   import { getContext } from 'svelte'
 
+  export let playlistsStore: PlaylistsStore
   export let playlist: Playlist
   export let songDB: SongDB
   export let storage: ExtensionStorage
@@ -133,21 +134,29 @@
         </Button>
       </div>
       <section class="song-container" use:dndzone={{ type: 'song', items, flipDurationMs }} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
-        {#each items as item(item.id)}
+        {#each items as item, idx (item.id)}
           {@const songNo = item.songNo}
           {@const songData = songDB.getSongData(songNo)}
           {@const songScore = storage.getScoreByNo(songNo)}
           <div animate:flip={{ duration: flipDurationMs }}>
-            <Song
-              songNo={songNo}
-              title={songData?.title ?? `unknown songNo${songNo}`}
-              genre={songData?.genres.at(0) ?? 'unknown'}
-              details={songScore?.details ?? {}}
-              translatedTitle={getTranslatedTitle(songData, songScore)}
-              songData={songData}
-              taikoNo={''}
-              playlists={undefined}
-            />
+            <div class="song-wrapper">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span class="song-numbering">#{idx + 1}</span>
+                <div>
+                  <button on:click={async () => { await playlistsStore.addOrRemoveSong(playlist, songNo) }}>❌</button>
+                </div>
+              </div>
+              <Song
+                songNo={songNo}
+                title={songData?.title ?? `unknown songNo${songNo}`}
+                genre={songData?.genres.at(0) ?? 'unknown'}
+                details={songScore?.details ?? {}}
+                translatedTitle={getTranslatedTitle(songData, songScore)}
+                songData={songData}
+                taikoNo={''}
+                playlists={undefined}
+              />
+            </div>
           </div>
         {/each}
       </section>
@@ -224,5 +233,25 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  .song-wrapper {
+    border-radius: 4px;
+  }
+
+  button {
+    box-shadow: none;
+    border-radius: 2px;
+    border: 1px solid #000;
+    background-color: #fff;
+  }
+
+  .song-numbering {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: white;
+    background-color: #0004;
+    border-radius: 4px;
+    padding: 2px 4px;
   }
 </style>

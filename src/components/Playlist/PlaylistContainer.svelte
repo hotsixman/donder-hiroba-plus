@@ -41,6 +41,7 @@
   {#each items as item(item.id)}
     <div animate:flip={{ duration: flipDurationMs }}>
       <PlaylistComponent
+        playlistsStore={playlists}
         playlist={item.playlist}
         {songDB}
         {storage}
