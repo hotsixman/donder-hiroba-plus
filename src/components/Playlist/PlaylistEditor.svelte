@@ -81,6 +81,9 @@
     {playlists}
     {songDB}
   />
+  <div class="header">
+    Favorites Folder
+  </div>
   <div class="button-container">
     <Button on:click={decodePlaylist}>
       Decode Base64
@@ -91,9 +94,6 @@
     <Button on:click={save}>
       Save
     </Button>
-  </div>
-  <div class="header">
-    Favorites Folder
   </div>
   <FavoriteSongs
     {songDB}
@@ -120,6 +120,7 @@
   .header {
     padding-top: 5px;
     height: 25px;
+    font-size: 16px;
     text-align: center;
     background: #ff5333;
     color: #ffffff;
