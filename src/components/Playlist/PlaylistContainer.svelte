@@ -56,5 +56,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 16px 0;
   }
 </style>

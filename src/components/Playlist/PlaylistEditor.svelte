@@ -84,6 +84,9 @@
 </script>
 
 <div class="wrapper">
+  <div class="header">
+    My Playlist
+  </div>
   <PlaylistContainer
     {storage}
     {playlists}
@@ -116,6 +119,7 @@
     width: 290px;
     background: #FFCC00;
     border-radius: 8px;
+    margin: 0 auto;
   }
 
   .button-container {
@@ -132,6 +136,5 @@
     background: #ff5333;
     color: #ffffff;
     text-shadow: -1px -1px 1px #aa0000, 1px -1px 1px #aa0000, -1px 1px 1px #aa0000, 1px 1px 1px #aa0000;
-    margin-bottom: 16px;
   }
 </style>

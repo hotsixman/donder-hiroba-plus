@@ -80,6 +80,8 @@
     flex-direction: column;
     align-items: center;
     gap: 10px;
+    margin: 16px 0;
+    padding-bottom: 24px;
   }
 
   .song-wrapper {
