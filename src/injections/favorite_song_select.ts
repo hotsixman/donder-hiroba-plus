@@ -8,6 +8,9 @@ export default async (): Promise<void> => {
     return
   }
 
+  const origin = favoriteSong.children[0] as HTMLElement
+  origin.style.display = 'none'
+
   const div = document.createElement('div')
   favoriteSong.insertBefore(div, favoriteSong.firstChild)
 
