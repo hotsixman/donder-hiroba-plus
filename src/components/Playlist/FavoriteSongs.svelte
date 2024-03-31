@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { dndzone } from 'svelte-dnd-action'
+  // import { dndzone } from 'svelte-dnd-action'
   import type { SongDB } from '../../lib/songDB'
   import type { FavoriteSong } from '../../types'
   import Song from '../Song/Song.svelte'
@@ -9,12 +9,13 @@
   export let songDB: SongDB | undefined
   export let favoriteSongList: FavoriteSong[]
   export let storage: ExtensionStorage | undefined
-  export let onChange: (favoriteSongs: FavoriteSong[]) => void
+  // export let onChange: (favoriteSongs: FavoriteSong[]) => void
 
   $: items = favoriteSongList.map((song, index) => ({ id: song.songNo, song, originalIndex: index }))
 
   const flipDurationMs = 300
 
+  /*
   const handleDndConsider = (e: CustomEvent): void => {
     items = e.detail.items
   }
@@ -23,6 +24,7 @@
     items = e.detail.items
     onChange(items.map((item) => item.song))
   }
+  */
 
   const deleteItem = (originalIndex: number): void => {
     const deleteButtons = document.querySelectorAll('.buttonDeleteSong')
@@ -41,7 +43,7 @@
 
 <div class="wrapper">
   {#if songDB !== undefined && storage !== undefined}
-  <section class="song-container" use:dndzone={{ type: 'fav-song', items, flipDurationMs }} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>
+  <section class="song-container"> <!--use:dndzone={{ type: 'fav-song', items, flipDurationMs }} on:consider={handleDndConsider} on:finalize={handleDndFinalize}>-->
     {#each items as item, idx (item.id)}
       {@const song = item.song}
       {@const genre = song.genre}
@@ -51,7 +53,7 @@
       <div animate:flip={{ duration: flipDurationMs }}>
         <div class="song-wrapper">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="color: white;">#{idx + 1}</span>
+            <span class="song-numbering">#{idx + 1}</span>
             <div>
               <button on:click={() => { changeItem(item.originalIndex) }}>Change</button>
               <button on:click={() => { deleteItem(item.originalIndex) }}>❌</button>
@@ -91,5 +93,16 @@
   button {
     box-shadow: none;
     border-radius: 2px;
+    border: 1px solid #000;
+    background-color: #fff;
+  }
+
+  .song-numbering {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: white;
+    background-color: #0004;
+    border-radius: 4px;
+    padding: 2px 4px;
   }
 </style>

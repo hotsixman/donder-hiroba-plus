@@ -26,7 +26,6 @@
       return
     }
 
-    sessionStorage.removeItem('favoriteSongList')
     window.location.href = 'https://donderhiroba.jp/mypage_top.php'
   }
 
@@ -40,11 +39,6 @@
       title: dateStr + ' ' + timeStr,
       songNoList: favoriteSongList.map((item) => item.songNo)
     })
-  }
-
-  const onChangeFavorite = (favoriteSongs: FavoriteSong[]): void => {
-    favoriteSongList = favoriteSongs
-    sessionStorage.setItem('favoriteSongList', JSON.stringify(favoriteSongs))
   }
 
   const decodePlaylist = async (): Promise<void> => {
@@ -74,11 +68,6 @@
     console.log('currentFavoriteSongList', favoriteSongList)
     songDB = await SongDB.getInstance()
     storage = await ExtensionStorage.getInstance()
-
-    const t = sessionStorage.getItem('favoriteSongList')
-    if (t !== null) {
-      favoriteSongList = JSON.parse(t)
-    }
   })
 
 </script>
@@ -109,7 +98,6 @@
   <FavoriteSongs
     {songDB}
     {storage}
-    onChange={onChangeFavorite}
     {favoriteSongList}
   />
 </div>
