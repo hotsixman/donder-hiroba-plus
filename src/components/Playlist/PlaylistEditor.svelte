@@ -76,6 +76,11 @@
   <div class="header">
     My Playlist
   </div>
+  <div class="button-container">
+    <Button on:click={decodePlaylist}>
+      Decode Base64
+    </Button>
+  </div>
   <PlaylistContainer
     {storage}
     {playlists}
@@ -85,9 +90,6 @@
     Favorites Folder
   </div>
   <div class="button-container">
-    <Button on:click={decodePlaylist}>
-      Decode Base64
-    </Button>
     <Button on:click={importCurrentAsPlaylist}>
       ↑ Import ↑
     </Button>
