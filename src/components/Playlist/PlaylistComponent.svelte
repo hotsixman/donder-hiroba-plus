@@ -154,7 +154,7 @@
                 translatedTitle={getTranslatedTitle(songData, songScore)}
                 songData={songData}
                 taikoNo={''}
-                playlists={undefined}
+                playlists={playlistsStore}
               />
             </div>
           </div>
