@@ -109,6 +109,9 @@
     <span>
       {playlist.title}
     </span>
+    <span>
+      ({playlist.songNoList.length})
+    </span>
   </div>
   {#if open}
     <div class="content"
