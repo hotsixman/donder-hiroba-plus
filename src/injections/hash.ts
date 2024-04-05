@@ -24,6 +24,9 @@ export function hashChangeCallback (event: HashChangeEvent): void {
   const oldURL = new URL(event.oldURL)
   const newURL = new URL(event.newURL)
 
+  console.log(oldURL.hash)
+  console.log(newURL.hash)
+
   if (oldURL.hash === '' && newURL.hash !== '') {
     window.location.reload()
   }
